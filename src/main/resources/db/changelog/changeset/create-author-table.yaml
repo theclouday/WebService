@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-author-table
+      author: Maksym
+      changes:
+        - createTable:
+            tableName: Authors
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: Name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Surname
+                  type: varchar(200)
+                  constraints:
+                    nullable: false

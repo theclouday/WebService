@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-book-table
+      author: Maksym
+      changes:
+        - createTable:
+            tableName: Books
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: Title
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Author Fullname
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Year of issue
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: Author_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: author_book_fk
+                    referencedTableName: Authors
+                    referencedColumnNames: ID
