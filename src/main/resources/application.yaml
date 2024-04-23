@@ -1,0 +1,19 @@
+#spring.application.name=webService
+
+spring:
+  liquibase:
+    enabled:true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/webService_db
+    username: postgres
+    password: privetmir547
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
