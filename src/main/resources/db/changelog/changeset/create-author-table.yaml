@@ -7,9 +7,8 @@ databaseChangeLog:
             tableName: Authors
             columns:
               - column:
-                  name: ID
+                  name: id
                   type: bigint
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
