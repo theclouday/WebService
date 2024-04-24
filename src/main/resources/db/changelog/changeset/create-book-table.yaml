@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: Books
             columns:
               - column:
-                  name: ID
+                  name: id
                   type: bigint
                   autoIncrement: true
                   constraints:
@@ -19,7 +19,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: Author Fullname
+                  name: Author
                   type: varchar(200)
                   constraints:
                     nullable: false
@@ -29,7 +29,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: Author_id
+                  name: author_id
                   type: bigint
                   constraints:
                     foreignKeyName: author_book_fk
