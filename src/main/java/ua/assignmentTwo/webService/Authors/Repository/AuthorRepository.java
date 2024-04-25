@@ -1,6 +1,7 @@
 package ua.assignmentTwo.webService.Authors.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import ua.assignmentTwo.webService.Books.Repository.Book;
 
 import java.util.List;
 
