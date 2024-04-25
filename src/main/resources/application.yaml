@@ -2,7 +2,7 @@
 
 spring:
   liquibase:
-    enabled:true
+    enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/webService_db
     username: postgres
@@ -10,7 +10,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true

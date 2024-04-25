@@ -5,18 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @Entity
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Getter
 public class Book {
     @Id
     @GeneratedValue
     private Long id;
     private String title;
-    private String authorFullName;
-    private String yearOfIssue;
-    private Long author_id;
+    private Integer yearOfIssue;
+    private Long authorId;
+
 }
