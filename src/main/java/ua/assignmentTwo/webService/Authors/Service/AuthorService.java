@@ -20,6 +20,14 @@ public class AuthorService {
         return authorRepository.save(authors);
     }
 
+    public Author updateDataInAuthor(Long id, Author authorData) {
+        Author authorToUpdate = authorRepository.findAllById(id);
+
+        authorToUpdate.setName(authorData.getName());
+        authorToUpdate.setSurname(authorData.getSurname());
+        return authorRepository.save(authorToUpdate);
+    }
+
     public void deleteAuthorById(Long id) {
         authorRepository.deleteById(id);
     }
