@@ -24,4 +24,14 @@ public class AuthorController {
     public Author createAuthorInDB(@RequestBody Author author){
         return authorService.createAuthor(author);
     }
+
+    @PutMapping("/author/{id}")
+    public Author updateAuthor(@PathVariable Long id, @RequestBody Author authorData){
+        return null;
+    }
+
+    @DeleteMapping("/author/{id}")
+    public void deleteAuthor(@PathVariable Long id){
+        authorService.deleteAuthorById(id);
+    }
 }

@@ -2,33 +2,44 @@ package ua.assignmentTwo.webService.Books.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ua.assignmentTwo.webService.Authors.Repository.Author;
 import ua.assignmentTwo.webService.Authors.Repository.AuthorRepository;
 import ua.assignmentTwo.webService.Books.Repository.Book;
 import ua.assignmentTwo.webService.Books.Repository.BookRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private final BookRepository book;
-    private final AuthorRepository author;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
-    public List<Book> findById(Long bookId) {
-        List<Book> bookData = book.findAllById(bookId);
-        return bookData;
+    public List<Book> findBookWithAuthorById(Long bookId) {
+        Book book = bookRepository.findAllById(bookId);
+        Author author = authorRepository.findAllById(book.getAuthorId());
+
+        book.setAuthor(String.valueOf(author));
+
+        return Collections.singletonList(book);
     }
 
     public Book createBook(Book books) {
-        return book.save(books);
+        return bookRepository.save(books);
     }
 
-    public Book updateDataById(Book books) {
-        return book.save(books);
+    public Book updateDataInBook(Long bookId, Book bookData) {
+        Book bookToUpdate = bookRepository.findAllById(bookId);
+
+        bookToUpdate.setAuthor(bookData.getAuthor());
+        bookToUpdate.setTitle(bookData.getTitle());
+        bookToUpdate.setYearOfIssue(bookData.getYearOfIssue());
+
+        return bookRepository.save(bookToUpdate);
     }
 
     public void deleteBookById(Long id) {
-//        List<Book> bookToDelete = book.findAllById(id);
-        book.deleteById(String.valueOf(id));
+        bookRepository.deleteById(String.valueOf(id));
     }
 }

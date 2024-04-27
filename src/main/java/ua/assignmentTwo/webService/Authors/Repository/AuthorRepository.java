@@ -6,5 +6,5 @@ import ua.assignmentTwo.webService.Books.Repository.Book;
 import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-    List<Author> findAllById(Long id);
+    Author findAllById(Long id);
 }

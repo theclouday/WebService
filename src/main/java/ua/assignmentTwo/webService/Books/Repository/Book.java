@@ -14,11 +14,40 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class Book {
+
     @Id
     @GeneratedValue
     private Long id;
     private String title;
     private Integer yearOfIssue;
+    private String author;
     private Long authorId;
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setYearOfIssue(Integer yearOfIssue) {
+        this.yearOfIssue = yearOfIssue;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Integer getYearOfIssue() {
+        return yearOfIssue;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

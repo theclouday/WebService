@@ -10,13 +10,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
-    private final AuthorRepository author;
+    private final AuthorRepository authorRepository;
 
     public List<Author> searchAll() {
-        return author.findAll();
+        return authorRepository.findAll();
     }
 
     public Author createAuthor(Author authors) {
-        return author.save(authors);
+        return authorRepository.save(authors);
+    }
+
+    public void deleteAuthorById(Long id) {
+        authorRepository.deleteById(id);
     }
 }
