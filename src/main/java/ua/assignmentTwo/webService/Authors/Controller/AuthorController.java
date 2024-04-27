@@ -27,7 +27,7 @@ public class AuthorController {
 
     @PutMapping("/author/{id}")
     public Author updateAuthor(@PathVariable Long id, @RequestBody Author authorData){
-        return null;
+        return authorService.updateDataInAuthor(id, authorData);
     }
 
     @DeleteMapping("/author/{id}")
