@@ -3,7 +3,10 @@ package ua.assignmentTwo.webService.authors.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ua.assignmentTwo.webService.authors.repository.Author;
+import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
+import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
+import ua.assignmentTwo.webService.authors.dto.CreateAuthorDto;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.service.AuthorService;
 
 import java.util.List;
@@ -21,13 +24,13 @@ public class AuthorController {
     }
 
     @PostMapping()
-    public Author createAuthorInDB(@RequestBody Author author){
-        return authorService.createAuthor(author);
+    public AuthorDetailsDto createAuthorInDB(@RequestBody CreateAuthorDto authorDto){
+        return authorService.createAuthor(authorDto);
     }
 
     @PutMapping("/{id}")
-    public Author updateAuthor(@PathVariable Long id, @RequestBody Author authorData){
-        return authorService.updateDataInAuthor(id, authorData);
+    public void updateAuthor(@PathVariable Long id, @RequestBody AuthorUpdateDto authorUpdateDto){
+        authorService.updateDataInAuthor(id, authorUpdateDto);
     }
 
     @DeleteMapping("/{id}")

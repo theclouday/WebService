@@ -2,8 +2,12 @@ package ua.assignmentTwo.webService.authors.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.assignmentTwo.webService.authors.repository.Author;
+import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
+import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
+import ua.assignmentTwo.webService.authors.dto.CreateAuthorDto;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
+import ua.assignmentTwo.webService.books.dto.UpdateBookDto;
 
 import java.util.List;
 
@@ -16,16 +20,28 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public Author createAuthor(Author authors) {
-        return authorRepository.save(authors);
+    public AuthorDetailsDto createAuthor(CreateAuthorDto createAuthorDto) {
+        Author author = new Author();
+        AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
+
+        author.setId(createAuthorDto.getId());
+        author.setName(createAuthorDto.getName());
+        author.setSurname(createAuthorDto.getSurname());
+        authorRepository.save(author);
+
+        authorDetailsDto.setId(author.getId());
+        authorDetailsDto.setName(author.getName());
+        authorDetailsDto.setSurname(author.getSurname());
+
+        return authorDetailsDto;
     }
 
-    public Author updateDataInAuthor(Long id, Author authorData) {
+    public void updateDataInAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
         Author authorToUpdate = authorRepository.findAllById(id);
 
-        authorToUpdate.setName(authorData.getName());
-        authorToUpdate.setSurname(authorData.getSurname());
-        return authorRepository.save(authorToUpdate);
+        authorToUpdate.setName(authorUpdateDto.getName());
+        authorToUpdate.setSurname(authorUpdateDto.getSurname());
+        authorRepository.save(authorToUpdate);
     }
 
     public void deleteAuthorById(Long id) {

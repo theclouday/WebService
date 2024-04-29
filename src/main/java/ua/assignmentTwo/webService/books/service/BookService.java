@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
-import ua.assignmentTwo.webService.authors.repository.Author;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 import ua.assignmentTwo.webService.books.dto.*;
 import ua.assignmentTwo.webService.books.model.Book;
@@ -70,7 +70,6 @@ public class BookService {
 
         bookToUpdate.setTitle(updateBookDto.getTitle());
         bookToUpdate.setYearOfIssue(updateBookDto.getYearOfIssue());
-
         bookRepository.save(bookToUpdate);
     }
 

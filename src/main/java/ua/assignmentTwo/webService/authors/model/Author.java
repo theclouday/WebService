@@ -1,4 +1,4 @@
-package ua.assignmentTwo.webService.authors.repository;
+package ua.assignmentTwo.webService.authors.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

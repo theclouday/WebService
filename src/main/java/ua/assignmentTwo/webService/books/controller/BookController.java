@@ -55,10 +55,14 @@ public class BookController {
     }
 
 
-//    TODO
-//     1)@PostMapping("/books/_list") доделать?
-//     4)POST /api/entity1/_report
-//     5)POST /api/entity1/upload доработать
+    /*TODO
+       1) @PostMapping("/books/_list") доделать вывод и фильтр (через RequestBody {“entity2Id”: 2, …, “page”: 1, “size”: 20})
+       2) POST /api/entity1/_report сделать
+       3) POST /api/entity1/upload доработать генерацию JSON файла
+       4) liquibase доделать наполнение БД Авторов через MySQL скрипт
+       5) Пофиксить null в ге запросе книги где данные у автора null выводятся
+       6) Тесты)
+     */
 
 
 }
