@@ -1,4 +1,4 @@
-package ua.assignmentTwo.webService.Books.dto;
+package ua.assignmentTwo.webService.books.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

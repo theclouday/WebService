@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Maksym
       changes:
         - createTable:
-            tableName: Books
+            tableName: books
             columns:
               - column:
                   name: id
@@ -33,5 +33,5 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     foreignKeyName: author_book_fk
-                    referencedTableName: Authors
+                    referencedTableName: authors
                     referencedColumnNames: ID

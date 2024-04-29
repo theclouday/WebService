@@ -1,4 +1,4 @@
-package ua.assignmentTwo.webService.Authors.repository;
+package ua.assignmentTwo.webService.authors.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

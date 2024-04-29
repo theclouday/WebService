@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Maksym
       changes:
         - createTable:
-            tableName: Authors
+            tableName: authors
             columns:
               - column:
                   name: id

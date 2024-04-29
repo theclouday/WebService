@@ -1,4 +1,4 @@
-package ua.assignmentTwo.webService.Books.repository;
+package ua.assignmentTwo.webService.books.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,6 @@ public class Book {
     private Long id;
     private String title;
     private Integer yearOfIssue;
-    private String author;
     private Long authorId;
 
 }

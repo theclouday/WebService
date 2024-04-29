@@ -1,0 +1,64 @@
+package ua.assignmentTwo.webService.books.controller;
+
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ua.assignmentTwo.webService.books.dto.BookDetailsDto;
+import ua.assignmentTwo.webService.books.dto.BookListItemDto;
+import ua.assignmentTwo.webService.books.dto.CreateBookDto;
+import ua.assignmentTwo.webService.books.dto.UpdateBookDto;
+import ua.assignmentTwo.webService.books.model.Book;
+import ua.assignmentTwo.webService.books.service.BookService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
+@AllArgsConstructor
+public class BookController {
+    @Autowired
+    private BookService bookService;
+
+    @PostMapping()
+    public BookDetailsDto createBookInDB(@RequestBody CreateBookDto createBookDto) {
+        return bookService.createBook(createBookDto);
+    }
+
+    @GetMapping("/{id}")
+    public BookDetailsDto findBookById(@PathVariable Long id) {
+        return bookService.getBookWithDetails(id);
+    }
+
+    @PutMapping("/{id}")
+    public void  updateBook(@PathVariable Long id, @RequestBody UpdateBookDto updateBookDto) {
+        bookService.updateDataInBook(id, updateBookDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteBookById(id);
+    }
+
+    @PostMapping("/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> uploadFromFile(@RequestParam("file") MultipartFile multipart){
+        List<Book> uploadedBooks = bookService.uploadFromFile(multipart);
+        return ResponseEntity.status(HttpStatus.CREATED).body("New data uploaded from file");
+    }
+
+    @PostMapping("/_list")
+    public List<BookListItemDto> getList(){
+        return bookService.getList();
+    }
+
+
+//    TODO
+//     1)@PostMapping("/books/_list") доделать?
+//     4)POST /api/entity1/_report
+//     5)POST /api/entity1/upload доработать
+
+
+}

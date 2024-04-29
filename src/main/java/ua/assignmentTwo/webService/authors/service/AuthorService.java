@@ -1,9 +1,9 @@
-package ua.assignmentTwo.webService.Authors.service;
+package ua.assignmentTwo.webService.authors.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.assignmentTwo.webService.Authors.repository.Author;
-import ua.assignmentTwo.webService.Authors.repository.AuthorRepository;
+import ua.assignmentTwo.webService.authors.repository.Author;
+import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 
 import java.util.List;
 
