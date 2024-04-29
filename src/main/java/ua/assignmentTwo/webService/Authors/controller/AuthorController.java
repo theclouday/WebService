@@ -1,10 +1,10 @@
-package ua.assignmentTwo.webService.Authors.Controller;
+package ua.assignmentTwo.webService.Authors.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ua.assignmentTwo.webService.Authors.Repository.Author;
-import ua.assignmentTwo.webService.Authors.Service.AuthorService;
+import ua.assignmentTwo.webService.Authors.repository.Author;
+import ua.assignmentTwo.webService.Authors.service.AuthorService;
 
 import java.util.List;
 

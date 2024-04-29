@@ -1,9 +1,6 @@
-package ua.assignmentTwo.webService.Authors.Repository;
+package ua.assignmentTwo.webService.Authors.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.assignmentTwo.webService.Books.Repository.Book;
-
-import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     Author findAllById(Long id);

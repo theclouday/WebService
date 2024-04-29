@@ -1,10 +1,13 @@
-package ua.assignmentTwo.webService.Books.Controller;
+package ua.assignmentTwo.webService.Books.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.assignmentTwo.webService.Books.Repository.Book;
-import ua.assignmentTwo.webService.Books.Service.BookService;
+import org.springframework.web.multipart.MultipartFile;
+import ua.assignmentTwo.webService.Books.repository.Book;
+import ua.assignmentTwo.webService.Books.service.BookService;
 
 import java.util.List;
 
@@ -32,20 +35,23 @@ public class BookController {
 
     @DeleteMapping("/book/{id}")
     public void deleteBook(@PathVariable Long id) {
-        try {
-            bookService.deleteBookById(id);
-            System.out.println("Done!");
-        } catch (Exception e) {
-            System.err.println("Error");
-        }
+        bookService.deleteBookById(id);
     }
 
+    @PostMapping("/book/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> uploadFromFile(@RequestParam("file") MultipartFile multipart){
+        List<Book> uploadedBooks = bookService.uploadFromFile(multipart);
+        return ResponseEntity.status(HttpStatus.CREATED).body("New data uploaded from file");
+    }
+
+
 //    TODO
+//     Структора проекта?
 //     1)@PostMapping("/books/_list")
-//     2)Переделать PUT запрос
-//     3)Get не корректный
+//     3)Get не корректный в поле author
 //     4)POST /api/entity1/_report
-//     5)POST /api/entity1/upload
+//     5)POST /api/entity1/upload доработать
 
 
 }
