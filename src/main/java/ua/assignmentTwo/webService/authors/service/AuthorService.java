@@ -21,22 +21,13 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public AuthorDetailsDto createAuthor(AuthorCreateDto authorCreateDto) {
+    public void createAuthor(AuthorCreateDto authorCreateDto) {
         Author author = new Author();
         author.setId(authorCreateDto.getId());
         author.setName(authorCreateDto.getName());
         author.setSurname(authorCreateDto.getSurname());
 
         authorRepository.save(author);
-        return convertToAuthorDetailsDto(author);
-    }
-
-    private AuthorDetailsDto convertToAuthorDetailsDto(Author author) {
-        AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
-        authorDetailsDto.setId(author.getId());
-        authorDetailsDto.setName(author.getName());
-        authorDetailsDto.setSurname(author.getSurname());
-        return authorDetailsDto;
     }
 
     public void updateDataInAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
