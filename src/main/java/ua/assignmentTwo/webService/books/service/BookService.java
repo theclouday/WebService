@@ -8,7 +8,7 @@ import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 import ua.assignmentTwo.webService.books.dto.*;
-import ua.assignmentTwo.webService.books.model.Books;
+import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +26,12 @@ public class BookService {
     private final ObjectMapper objectMapper;
 
     public BookDetailsDto getBookWithDetails(Long bookId) {
-        Books book = bookRepository.findAllById(bookId);
+        Book book = bookRepository.findAllById(bookId);
         Author author = authorRepository.findAllById(book.getAuthorId());
         return convertDetails(book, author);
     }
 
-    private BookDetailsDto convertDetails(Books book, Author author) {
+    private BookDetailsDto convertDetails(Book book, Author author) {
         BookDetailsDto bookDetailsDto = new BookDetailsDto();
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
 
@@ -48,7 +48,7 @@ public class BookService {
     }
 
     public void createBook(BookCreateDto bookCreateDto) {
-        Books book = new Books();
+        Book book = new Book();
 
         book.setId(bookCreateDto.getId());
         book.setTitle(bookCreateDto.getTitle());
@@ -60,7 +60,7 @@ public class BookService {
 
 
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
-        Books bookToUpdate = bookRepository.findAllById(bookId);
+        Book bookToUpdate = bookRepository.findAllById(bookId);
 
         bookToUpdate.setTitle(bookUpdateDto.getTitle());
         bookToUpdate.setYearOfIssue(bookUpdateDto.getYearOfIssue());
@@ -68,16 +68,16 @@ public class BookService {
     }
 
     public List<BookListItemDto> getList() {
-        List<Books> booksList = bookRepository.findAll();
-        System.out.println(booksList);
+        List<Book> bookList = bookRepository.findAll();
+        System.out.println(bookList);
         Map<Long, Author> authorMap = authorRepository.findAll().stream()
                 .collect(Collectors.toMap(Author::getId, author -> author));
-        return booksList.stream()
+        return bookList.stream()
                 .map(book -> convertToListItem(book, authorMap.get(book.getAuthorId())))
                 .toList();
     }
 
-    private BookListItemDto convertToListItem(Books book, Author author) {
+    private BookListItemDto convertToListItem(Book book, Author author) {
         BookListItemDto bookListItemDto = new BookListItemDto();
         bookListItemDto.setId(book.getId());
         bookListItemDto.setAuthorName(author.getName());
@@ -90,10 +90,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Books> uploadFromFile(MultipartFile file) {
+    public List<Book> uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
-            List<Books> books = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
+            List<Book> books = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
                     })
                     .stream()
                     .map(this::convertFromUpload)
@@ -105,8 +105,8 @@ public class BookService {
     }
 
 
-    private Books convertFromUpload(BookUploadDto uploadDto) {
-        Books book = new Books();
+    private Book convertFromUpload(BookUploadDto uploadDto) {
+        Book book = new Book();
 
         book.setId(uploadDto.getId());
         book.setTitle(uploadDto.getTitle());
