@@ -92,8 +92,8 @@ public class BookService {
     public List<Book> uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
-            List<Book> books = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
-                    })
+            List<BookUploadDto> uploadDtos = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
+            List<Book> books = uploadDtos
                     .stream()
                     .map(this::convertFromUpload)
                     .toList();
@@ -110,7 +110,7 @@ public class BookService {
         book.setId(uploadDto.getId());
         book.setTitle(uploadDto.getTitle());
         book.setYearOfIssue(uploadDto.getYearOfIssue());
-        book.setAuthorId(uploadDto.getAuthorId());
+        book.setAuthorId(uploadDto.getAuthor().getId());
 
         return book;
     }
