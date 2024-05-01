@@ -23,8 +23,9 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping()
-    public BookDetailsDto createBookInDB(@RequestBody BookCreateDto bookCreateDto) {
-        return bookService.createBook(bookCreateDto);
+    public ResponseEntity createBookInDB(@RequestBody BookCreateDto bookCreateDto) {
+        bookService.createBook(bookCreateDto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -59,8 +60,7 @@ public class BookController {
        1) @PostMapping("/books/_list") доделать вывод и фильтр (через RequestBody {“entity2Id”: 2, …, “page”: 1, “size”: 20})
        2) POST /api/entity1/_report сделать
        3) POST /api/entity1/upload доработать генерацию JSON файла
-       4) liquibase доделать наполнение БД Авторов через MySQL скрипт
-       5) Тесты)
+       5) Тесты) MVCMock (1 вызов, 2 достать из бд)
      */
 
 

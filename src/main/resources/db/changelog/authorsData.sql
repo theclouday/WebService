@@ -2,16 +2,16 @@
 
 --changeset Maksym:1
 
-INSERT INTO Authors (id, name, surname)
-VALUES (1, 'Andrew', 'Washington');
+INSERT INTO Authors (name, surname)
+VALUES ('Andrew', 'Washington');
 
-INSERT INTO Authors (id, name, surname)
-VALUES (2, 'Ollie', 'Owell');
+INSERT INTO Authors (name, surname)
+VALUES ('Ollie', 'Owell');
 
-INSERT INTO Authors (id, name, surname)
-VALUES (3, 'John', 'Tremblay');
+INSERT INTO Authors (name, surname)
+VALUES ('John', 'Tremblay');
 
-INSERT INTO Authors (id, name, surname)
-VALUES (4, 'Volodymyr', 'Zelenskyy');
+INSERT INTO Authors (name, surname)
+VALUES ('Volodymyr', 'Zelenskyy');
 
 

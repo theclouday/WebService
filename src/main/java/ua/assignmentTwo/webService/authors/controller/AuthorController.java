@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
-import ua.assignmentTwo.webService.authors.model.Authors;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.service.AuthorService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class AuthorController {
     private AuthorService authorService;
 
     @GetMapping()
-    public List<Authors> findAll() {
+    public List<Author> findAll() {
         return authorService.searchAll();
     }
 

@@ -1,13 +1,15 @@
 package ua.assignmentTwo.webService.authors.service;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
-import ua.assignmentTwo.webService.authors.model.Authors;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -15,12 +17,12 @@ import java.util.List;
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
-    public List<Authors> searchAll() {
+    public List<Author> searchAll() {
         return authorRepository.findAll();
     }
 
     public AuthorDetailsDto createAuthor(AuthorCreateDto authorCreateDto) {
-        Authors author = new Authors();
+        Author author = new Author();
         author.setId(authorCreateDto.getId());
         author.setName(authorCreateDto.getName());
         author.setSurname(authorCreateDto.getSurname());
@@ -29,7 +31,7 @@ public class AuthorService {
         return convertToAuthorDetailsDto(author);
     }
 
-    private AuthorDetailsDto convertToAuthorDetailsDto(Authors author) {
+    private AuthorDetailsDto convertToAuthorDetailsDto(Author author) {
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
         authorDetailsDto.setId(author.getId());
         authorDetailsDto.setName(author.getName());
@@ -38,7 +40,7 @@ public class AuthorService {
     }
 
     public void updateDataInAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
-        Authors authorToUpdate = authorRepository.findAllById(id);
+        Author authorToUpdate = authorRepository.findAllById(id);
 
         authorToUpdate.setName(authorUpdateDto.getName());
         authorToUpdate.setSurname(authorUpdateDto.getSurname());

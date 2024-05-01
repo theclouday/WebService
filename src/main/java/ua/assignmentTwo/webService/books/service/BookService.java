@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
-import ua.assignmentTwo.webService.authors.model.Authors;
+import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 import ua.assignmentTwo.webService.books.dto.*;
 import ua.assignmentTwo.webService.books.model.Books;
@@ -27,11 +27,11 @@ public class BookService {
 
     public BookDetailsDto getBookWithDetails(Long bookId) {
         Books book = bookRepository.findAllById(bookId);
-        Authors author = authorRepository.findAllById(book.getAuthorId());
+        Author author = authorRepository.findAllById(book.getAuthorId());
         return convertDetails(book, author);
     }
 
-    private BookDetailsDto convertDetails(Books book, Authors author) {
+    private BookDetailsDto convertDetails(Books book, Author author) {
         BookDetailsDto bookDetailsDto = new BookDetailsDto();
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
 
@@ -47,7 +47,7 @@ public class BookService {
         return bookDetailsDto;
     }
 
-    public BookDetailsDto createBook(BookCreateDto bookCreateDto) {
+    public void createBook(BookCreateDto bookCreateDto) {
         Books book = new Books();
 
         book.setId(bookCreateDto.getId());
@@ -56,25 +56,8 @@ public class BookService {
         book.setAuthorId(bookCreateDto.getAuthor().getId());
 
         bookRepository.save(book);
-        return convertToBookDetailsDto(book);
     }
 
-    private BookDetailsDto convertToBookDetailsDto(Books book) {
-        BookDetailsDto bookDetailsDto = new BookDetailsDto();
-        AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
-        Authors author = new Authors();
-
-        authorDetailsDto.setId(author.getId());
-        authorDetailsDto.setName(author.getName());
-        authorDetailsDto.setSurname(author.getSurname());
-
-        bookDetailsDto.setId(book.getId());
-        bookDetailsDto.setTitle(book.getTitle());
-        bookDetailsDto.setYearOfIssue(book.getYearOfIssue());
-        bookDetailsDto.setAuthor(authorDetailsDto);
-
-        return bookDetailsDto;
-    }
 
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
         Books bookToUpdate = bookRepository.findAllById(bookId);
@@ -87,14 +70,14 @@ public class BookService {
     public List<BookListItemDto> getList() {
         List<Books> booksList = bookRepository.findAll();
         System.out.println(booksList);
-        Map<Long, Authors> authorMap = authorRepository.findAll().stream()
-                .collect(Collectors.toMap(Authors::getId, authors -> authors));
+        Map<Long, Author> authorMap = authorRepository.findAll().stream()
+                .collect(Collectors.toMap(Author::getId, author -> author));
         return booksList.stream()
                 .map(book -> convertToListItem(book, authorMap.get(book.getAuthorId())))
                 .toList();
     }
 
-    private BookListItemDto convertToListItem(Books book, Authors author) {
+    private BookListItemDto convertToListItem(Books book, Author author) {
         BookListItemDto bookListItemDto = new BookListItemDto();
         bookListItemDto.setId(book.getId());
         bookListItemDto.setAuthorName(author.getName());
