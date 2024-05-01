@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.assignmentTwo.webService.books.dto.BookDetailsDto;
 import ua.assignmentTwo.webService.books.dto.BookListItemDto;
-import ua.assignmentTwo.webService.books.dto.CreateBookDto;
-import ua.assignmentTwo.webService.books.dto.UpdateBookDto;
+import ua.assignmentTwo.webService.books.dto.BookCreateDto;
+import ua.assignmentTwo.webService.books.dto.BookUpdateDto;
 import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.service.BookService;
 
@@ -23,8 +23,8 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping()
-    public BookDetailsDto createBookInDB(@RequestBody CreateBookDto createBookDto) {
-        return bookService.createBook(createBookDto);
+    public BookDetailsDto createBookInDB(@RequestBody BookCreateDto bookCreateDto) {
+        return bookService.createBook(bookCreateDto);
     }
 
     @GetMapping("/{id}")
@@ -33,8 +33,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public void  updateBook(@PathVariable Long id, @RequestBody UpdateBookDto updateBookDto) {
-        bookService.updateDataInBook(id, updateBookDto);
+    public void  updateBook(@PathVariable Long id, @RequestBody BookUpdateDto bookUpdateDto) {
+        bookService.updateDataInBook(id, bookUpdateDto);
     }
 
     @DeleteMapping("/{id}")

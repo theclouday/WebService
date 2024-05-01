@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateAuthorDto {
+public class AuthorCreateDto {
     private Long id;
     private String name;
     private String surname;

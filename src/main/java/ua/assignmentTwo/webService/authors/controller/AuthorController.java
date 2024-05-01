@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
-import ua.assignmentTwo.webService.authors.dto.CreateAuthorDto;
+import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
 import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.service.AuthorService;
 
@@ -24,7 +24,7 @@ public class AuthorController {
     }
 
     @PostMapping()
-    public AuthorDetailsDto createAuthorInDB(@RequestBody CreateAuthorDto authorDto){
+    public AuthorDetailsDto createAuthorInDB(@RequestBody AuthorCreateDto authorDto){
         return authorService.createAuthor(authorDto);
     }
 

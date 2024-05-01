@@ -35,6 +35,10 @@ public class BookService {
         BookDetailsDto bookDetailsDto = new BookDetailsDto();
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
 
+        authorDetailsDto.setId(author.getId());
+        authorDetailsDto.setName(author.getName());
+        authorDetailsDto.setSurname(author.getSurname());
+
         bookDetailsDto.setId(book.getId());
         bookDetailsDto.setTitle(book.getTitle());
         bookDetailsDto.setYearOfIssue(book.getYearOfIssue());
@@ -43,33 +47,40 @@ public class BookService {
         return bookDetailsDto;
     }
 
-    public BookDetailsDto createBook(CreateBookDto createBookDto) {
-        return convertNewBook(createBookDto);
-    }
-
-    private BookDetailsDto convertNewBook(CreateBookDto createBookDto) {
+    public BookDetailsDto createBook(BookCreateDto bookCreateDto) {
         Book book = new Book();
-        AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
-        BookDetailsDto bookDetailsDto = new BookDetailsDto();
 
-        book.setId(createBookDto.getId());
-        book.setTitle(createBookDto.getTitle());
-        book.setYearOfIssue(createBookDto.getYearOfIssue());
-        book.setAuthorId(authorDetailsDto.getId());
+        book.setId(bookCreateDto.getId());
+        book.setTitle(bookCreateDto.getTitle());
+        book.setYearOfIssue(bookCreateDto.getYearOfIssue());
+        book.setAuthorId(bookCreateDto.getAuthor().getId());
 
         bookRepository.save(book);
+        return convertToBookDetailsDto(book);
+    }
+
+    private BookDetailsDto convertToBookDetailsDto(Book book) {
+        BookDetailsDto bookDetailsDto = new BookDetailsDto();
+        AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
+        Author author = new Author();
+
+        authorDetailsDto.setId(author.getId());
+        authorDetailsDto.setName(author.getName());
+        authorDetailsDto.setSurname(author.getSurname());
+
         bookDetailsDto.setId(book.getId());
         bookDetailsDto.setTitle(book.getTitle());
         bookDetailsDto.setYearOfIssue(book.getYearOfIssue());
+        bookDetailsDto.setAuthor(authorDetailsDto);
 
         return bookDetailsDto;
     }
 
-    public void updateDataInBook(Long bookId, UpdateBookDto updateBookDto) {
+    public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
         Book bookToUpdate = bookRepository.findAllById(bookId);
 
-        bookToUpdate.setTitle(updateBookDto.getTitle());
-        bookToUpdate.setYearOfIssue(updateBookDto.getYearOfIssue());
+        bookToUpdate.setTitle(bookUpdateDto.getTitle());
+        bookToUpdate.setYearOfIssue(bookUpdateDto.getYearOfIssue());
         bookRepository.save(bookToUpdate);
     }
 

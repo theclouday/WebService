@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateBookDto {
+public class BookUpdateDto {
     private String title;
     private Integer yearOfIssue;
 }
