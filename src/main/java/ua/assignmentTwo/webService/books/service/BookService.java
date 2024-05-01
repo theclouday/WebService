@@ -54,7 +54,6 @@ public class BookService {
         book.setTitle(bookCreateDto.getTitle());
         book.setYearOfIssue(bookCreateDto.getYearOfIssue());
         book.setAuthorId(bookCreateDto.getAuthor().getId());
-
         bookRepository.save(book);
     }
 

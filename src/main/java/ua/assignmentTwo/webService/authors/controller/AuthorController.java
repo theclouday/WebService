@@ -1,11 +1,9 @@
 package ua.assignmentTwo.webService.authors.controller;
 
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
 import ua.assignmentTwo.webService.authors.model.Author;

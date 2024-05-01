@@ -1,9 +1,7 @@
 package ua.assignmentTwo.webService.authors.service;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
 import ua.assignmentTwo.webService.authors.model.Author;
@@ -23,10 +21,10 @@ public class AuthorService {
 
     public void createAuthor(AuthorCreateDto authorCreateDto) {
         Author author = new Author();
+
         author.setId(authorCreateDto.getId());
         author.setName(authorCreateDto.getName());
         author.setSurname(authorCreateDto.getSurname());
-
         authorRepository.save(author);
     }
 
