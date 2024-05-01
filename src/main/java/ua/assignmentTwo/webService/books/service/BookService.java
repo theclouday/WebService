@@ -42,8 +42,8 @@ public class BookService {
         bookDetailsDto.setId(book.getId());
         bookDetailsDto.setTitle(book.getTitle());
         bookDetailsDto.setYearOfIssue(book.getYearOfIssue());
-
         bookDetailsDto.setAuthor(authorDetailsDto);
+
         return bookDetailsDto;
     }
 
@@ -124,10 +124,12 @@ public class BookService {
 
     private Book convertFromUpload(BookUploadDto uploadDto) {
         Book book = new Book();
+
         book.setId(uploadDto.getId());
         book.setTitle(uploadDto.getTitle());
         book.setYearOfIssue(uploadDto.getYearOfIssue());
         book.setAuthorId(uploadDto.getAuthorId());
+
         return book;
     }
 }

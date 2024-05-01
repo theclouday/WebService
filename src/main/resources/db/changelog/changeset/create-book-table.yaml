@@ -19,11 +19,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: Author
-                  type: varchar(200)
-                  constraints:
-                    nullable: false
-              - column:
                   name: Year of issue
                   type: bigint
                   constraints:
@@ -34,4 +29,4 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: author_book_fk
                     referencedTableName: authors
-                    referencedColumnNames: ID
+                    referencedColumnNames: id

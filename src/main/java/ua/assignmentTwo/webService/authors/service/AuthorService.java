@@ -26,10 +26,10 @@ public class AuthorService {
         author.setSurname(authorCreateDto.getSurname());
 
         authorRepository.save(author);
-        return convertToAuthor(author);
+        return convertToAuthorDetailsDto(author);
     }
 
-    private AuthorDetailsDto convertToAuthor(Author author) {
+    private AuthorDetailsDto convertToAuthorDetailsDto(Author author) {
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
         authorDetailsDto.setId(author.getId());
         authorDetailsDto.setName(author.getName());

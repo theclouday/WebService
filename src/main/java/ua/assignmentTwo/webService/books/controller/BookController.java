@@ -60,8 +60,7 @@ public class BookController {
        2) POST /api/entity1/_report сделать
        3) POST /api/entity1/upload доработать генерацию JSON файла
        4) liquibase доделать наполнение БД Авторов через MySQL скрипт
-       5) Пофиксить null в ге запросе книги где данные у автора null выводятся
-       6) Тесты)
+       5) Тесты)
      */
 
 
