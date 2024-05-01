@@ -1,6 +1,7 @@
 package ua.assignmentTwo.webService.books.dto;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class BookDetailsDto {
     private Long id;
     private String title;
     private Integer yearOfIssue;
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     private AuthorDetailsDto author;

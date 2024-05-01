@@ -1,8 +1,6 @@
 package ua.assignmentTwo.webService.books.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -11,13 +9,12 @@ import lombok.*;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Book {
-
+public class Books {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(name = "year of issue")
     private Integer yearOfIssue;
     private Long authorId;
-
 }

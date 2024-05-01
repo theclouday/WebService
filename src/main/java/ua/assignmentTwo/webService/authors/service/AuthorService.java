@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorUpdateDto;
 import ua.assignmentTwo.webService.authors.dto.AuthorCreateDto;
-import ua.assignmentTwo.webService.authors.model.Author;
+import ua.assignmentTwo.webService.authors.model.Authors;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 
 import java.util.List;
@@ -15,12 +15,12 @@ import java.util.List;
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
-    public List<Author> searchAll() {
+    public List<Authors> searchAll() {
         return authorRepository.findAll();
     }
 
     public AuthorDetailsDto createAuthor(AuthorCreateDto authorCreateDto) {
-        Author author = new Author();
+        Authors author = new Authors();
         author.setId(authorCreateDto.getId());
         author.setName(authorCreateDto.getName());
         author.setSurname(authorCreateDto.getSurname());
@@ -29,7 +29,7 @@ public class AuthorService {
         return convertToAuthorDetailsDto(author);
     }
 
-    private AuthorDetailsDto convertToAuthorDetailsDto(Author author) {
+    private AuthorDetailsDto convertToAuthorDetailsDto(Authors author) {
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
         authorDetailsDto.setId(author.getId());
         authorDetailsDto.setName(author.getName());
@@ -38,7 +38,7 @@ public class AuthorService {
     }
 
     public void updateDataInAuthor(Long id, AuthorUpdateDto authorUpdateDto) {
-        Author authorToUpdate = authorRepository.findAllById(id);
+        Authors authorToUpdate = authorRepository.findAllById(id);
 
         authorToUpdate.setName(authorUpdateDto.getName());
         authorToUpdate.setSurname(authorUpdateDto.getSurname());

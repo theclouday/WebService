@@ -13,12 +13,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: Name
+                  name: name
                   type: varchar(200)
                   constraints:
                     nullable: false
               - column:
-                  name: Surname
+                  name: surname
                   type: varchar(200)
                   constraints:
                     nullable: false

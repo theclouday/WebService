@@ -10,7 +10,7 @@ import ua.assignmentTwo.webService.books.dto.BookDetailsDto;
 import ua.assignmentTwo.webService.books.dto.BookListItemDto;
 import ua.assignmentTwo.webService.books.dto.BookCreateDto;
 import ua.assignmentTwo.webService.books.dto.BookUpdateDto;
-import ua.assignmentTwo.webService.books.model.Book;
+import ua.assignmentTwo.webService.books.model.Books;
 import ua.assignmentTwo.webService.books.service.BookService;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class BookController {
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> uploadFromFile(@RequestParam("file") MultipartFile multipart){
-        List<Book> uploadedBooks = bookService.uploadFromFile(multipart);
+        List<Books> uploadedBooks = bookService.uploadFromFile(multipart);
         return ResponseEntity.status(HttpStatus.CREATED).body("New data uploaded from file");
     }
 

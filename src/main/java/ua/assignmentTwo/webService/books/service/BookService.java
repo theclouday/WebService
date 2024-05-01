@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
-import ua.assignmentTwo.webService.authors.model.Author;
+import ua.assignmentTwo.webService.authors.model.Authors;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 import ua.assignmentTwo.webService.books.dto.*;
-import ua.assignmentTwo.webService.books.model.Book;
+import ua.assignmentTwo.webService.books.model.Books;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +26,12 @@ public class BookService {
     private final ObjectMapper objectMapper;
 
     public BookDetailsDto getBookWithDetails(Long bookId) {
-        Book book = bookRepository.findAllById(bookId);
-        Author author = authorRepository.findAllById(book.getAuthorId());
+        Books book = bookRepository.findAllById(bookId);
+        Authors author = authorRepository.findAllById(book.getAuthorId());
         return convertDetails(book, author);
     }
 
-    private BookDetailsDto convertDetails(Book book, Author author) {
+    private BookDetailsDto convertDetails(Books book, Authors author) {
         BookDetailsDto bookDetailsDto = new BookDetailsDto();
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
 
@@ -48,7 +48,7 @@ public class BookService {
     }
 
     public BookDetailsDto createBook(BookCreateDto bookCreateDto) {
-        Book book = new Book();
+        Books book = new Books();
 
         book.setId(bookCreateDto.getId());
         book.setTitle(bookCreateDto.getTitle());
@@ -59,10 +59,10 @@ public class BookService {
         return convertToBookDetailsDto(book);
     }
 
-    private BookDetailsDto convertToBookDetailsDto(Book book) {
+    private BookDetailsDto convertToBookDetailsDto(Books book) {
         BookDetailsDto bookDetailsDto = new BookDetailsDto();
         AuthorDetailsDto authorDetailsDto = new AuthorDetailsDto();
-        Author author = new Author();
+        Authors author = new Authors();
 
         authorDetailsDto.setId(author.getId());
         authorDetailsDto.setName(author.getName());
@@ -77,7 +77,7 @@ public class BookService {
     }
 
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
-        Book bookToUpdate = bookRepository.findAllById(bookId);
+        Books bookToUpdate = bookRepository.findAllById(bookId);
 
         bookToUpdate.setTitle(bookUpdateDto.getTitle());
         bookToUpdate.setYearOfIssue(bookUpdateDto.getYearOfIssue());
@@ -85,16 +85,16 @@ public class BookService {
     }
 
     public List<BookListItemDto> getList() {
-        List<Book> bookList = bookRepository.findAll();
-        System.out.println(bookList);
-        Map<Long, Author> authorMap = authorRepository.findAll().stream()
-                .collect(Collectors.toMap(Author::getId, author -> author));
-        return bookList.stream()
+        List<Books> booksList = bookRepository.findAll();
+        System.out.println(booksList);
+        Map<Long, Authors> authorMap = authorRepository.findAll().stream()
+                .collect(Collectors.toMap(Authors::getId, authors -> authors));
+        return booksList.stream()
                 .map(book -> convertToListItem(book, authorMap.get(book.getAuthorId())))
                 .toList();
     }
 
-    private BookListItemDto convertToListItem(Book book, Author author) {
+    private BookListItemDto convertToListItem(Books book, Authors author) {
         BookListItemDto bookListItemDto = new BookListItemDto();
         bookListItemDto.setId(book.getId());
         bookListItemDto.setAuthorName(author.getName());
@@ -107,10 +107,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> uploadFromFile(MultipartFile file) {
+    public List<Books> uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
-            List<Book> books = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
+            List<Books> books = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
                     })
                     .stream()
                     .map(this::convertFromUpload)
@@ -122,8 +122,8 @@ public class BookService {
     }
 
 
-    private Book convertFromUpload(BookUploadDto uploadDto) {
-        Book book = new Book();
+    private Books convertFromUpload(BookUploadDto uploadDto) {
+        Books book = new Books();
 
         book.setId(uploadDto.getId());
         book.setTitle(uploadDto.getTitle());

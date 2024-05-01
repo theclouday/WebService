@@ -14,12 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: Title
+                  name: title
                   type: varchar(200)
                   constraints:
                     nullable: false
               - column:
-                  name: Year of issue
+                  name: year of issue
                   type: bigint
                   constraints:
                     nullable: false
