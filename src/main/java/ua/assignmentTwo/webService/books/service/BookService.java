@@ -92,8 +92,8 @@ public class BookService {
     public List<Book> uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
-            List<BookUploadDto> uploadDtos = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
-            List<Book> books = uploadDtos
+            List<BookUploadDto> uploadDtoList = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
+            List<Book> books = uploadDtoList
                     .stream()
                     .map(this::convertFromUpload)
                     .toList();
@@ -102,7 +102,6 @@ public class BookService {
             throw new RuntimeException("Error processing file upload: " + e.getMessage());
         }
     }
-
 
     private Book convertFromUpload(BookUploadDto uploadDto) {
         Book book = new Book();
