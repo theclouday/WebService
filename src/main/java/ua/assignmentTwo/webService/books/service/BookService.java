@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,36 +94,41 @@ public class BookService {
         try {
             byte[] fileBytes = file.getBytes();
             List<BookUploadDto> uploadDtoList = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
-            List<Book> books = uploadDtoList
+            List<Optional<Book>> books = uploadDtoList
                     .stream()
                     .map(this::convertFromUpload)
                     .toList();
-            bookRepository.saveAll(books);
+            List<Book> validBooks = books.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+            bookRepository.saveAll(validBooks);
             return counter(books);
         } catch (IOException e) {
             throw new RuntimeException("Error processing file upload: " + e.getMessage());
         }
     }
 
-    private Book convertFromUpload(BookUploadDto uploadDto) {
-        Book book = new Book();
+    private Optional<Book> convertFromUpload(BookUploadDto uploadDto) {
+        try{
+            Book book = new Book();
 
-        book.setId(uploadDto.getId());
-        book.setTitle(uploadDto.getTitle());
-        book.setYearOfIssue(uploadDto.getYearOfIssue());
-        book.setAuthorId(uploadDto.getAuthor().getId());
+            book.setId(uploadDto.getId());
+            book.setTitle(uploadDto.getTitle());
+            book.setYearOfIssue(uploadDto.getYearOfIssue());
+            book.setAuthorId(uploadDto.getAuthor().getId());
 
-        return book;
+            return Optional.of(book);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
-    private UploadResultDto counter(List<Book> bookList) {
+    private UploadResultDto counter(List<Optional<Book>> bookList) {
         UploadResultDto result = new UploadResultDto();
 
         int successCount = 0;
         int failCount = 0;
 
-        for (Book book : bookList) {
-            if (book != null) {
+        for (Optional<Book> book : bookList) {
+            if (book.isPresent()) {
                 successCount++;
             } else {
                 failCount++;

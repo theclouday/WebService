@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.assignmentTwo.webService.books.dto.*;
-import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.service.BookService;
 
 import java.util.List;
@@ -40,22 +39,27 @@ public class BookController {
         bookService.deleteBookById(id);
     }
 
+    @PostMapping("/_list")
+    public List<BookListItemDto> getList(@RequestBody BookListRequestDto bookListRequestDto){
+        return bookService.getList();
+    }
+
+//    @PostMapping("/_report")
+//    public ExcelDFileDto generateFile(RequestBody BookExcelRequest requesExceltDto) {
+//        return null;
+//    }
+
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
     public UploadResultDto uploadFromFile(@RequestParam("file") MultipartFile multipart){
         return  bookService.uploadFromFile(multipart);
     }
 
-    @PostMapping("/_list")
-    public List<BookListItemDto> getList(@RequestBody BookListRequest bookListRequest){
-        return bookService.getList();
-    }
 
 
     /*TODO
        1) @PostMapping("/books/_list") доделать вывод и фильтр (через RequestBody {“entity2Id”: 2, …, “page”: 1, “size”: 20})
        2) POST /api/entity1/_report сделать
-       3) POST /api/entity1/upload доработать генерацию JSON файла
        5) Тесты) MVCMock (1 вызов, 2 достать из бд)
      */
 

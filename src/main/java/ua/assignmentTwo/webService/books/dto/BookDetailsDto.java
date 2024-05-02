@@ -1,7 +1,6 @@
 package ua.assignmentTwo.webService.books.dto;
 
 
-import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
