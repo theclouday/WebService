@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ua.assignmentTwo.webService.books.dto.BookDetailsDto;
-import ua.assignmentTwo.webService.books.dto.BookListItemDto;
-import ua.assignmentTwo.webService.books.dto.BookCreateDto;
-import ua.assignmentTwo.webService.books.dto.BookUpdateDto;
+import ua.assignmentTwo.webService.books.dto.*;
 import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.service.BookService;
 
@@ -45,13 +42,12 @@ public class BookController {
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> uploadFromFile(@RequestParam("file") MultipartFile multipart){
-        List<Book> uploadedBooks = bookService.uploadFromFile(multipart);
-        return ResponseEntity.status(HttpStatus.CREATED).body("New data uploaded from file");
+    public UploadResultDto uploadFromFile(@RequestParam("file") MultipartFile multipart){
+        return  bookService.uploadFromFile(multipart);
     }
 
     @PostMapping("/_list")
-    public List<BookListItemDto> getList(){
+    public List<BookListItemDto> getList(@RequestBody BookListRequest bookListRequest){
         return bookService.getList();
     }
 

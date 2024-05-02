@@ -9,18 +9,13 @@ import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 @Getter
 @Setter
 public class BookUploadDto {
-    @NonNull
     @JsonProperty("id")
     private Long id;
-    @NonNull
     @JsonProperty("title")
     private String title;
-    @NonNull
     @JsonProperty("yearOfIssue")
     private Integer yearOfIssue;
-    @NonNull
     private AuthorDetailsDto author;
-    @NonNull
     private Long authorId;
 
 }

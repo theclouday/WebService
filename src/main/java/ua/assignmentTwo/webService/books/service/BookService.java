@@ -68,7 +68,6 @@ public class BookService {
 
     public List<BookListItemDto> getList() {
         List<Book> bookList = bookRepository.findAll();
-        System.out.println(bookList);
         Map<Long, Author> authorMap = authorRepository.findAll().stream()
                 .collect(Collectors.toMap(Author::getId, author -> author));
         return bookList.stream()
@@ -90,7 +89,7 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> uploadFromFile(MultipartFile file) {
+    public UploadResultDto uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
             List<BookUploadDto> uploadDtoList = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
@@ -98,7 +97,8 @@ public class BookService {
                     .stream()
                     .map(this::convertFromUpload)
                     .toList();
-            return bookRepository.saveAll(books);
+            bookRepository.saveAll(books);
+            return counter(books);
         } catch (IOException e) {
             throw new RuntimeException("Error processing file upload: " + e.getMessage());
         }
@@ -113,5 +113,24 @@ public class BookService {
         book.setAuthorId(uploadDto.getAuthor().getId());
 
         return book;
+    }
+
+    private UploadResultDto counter(List<Book> bookList) {
+        UploadResultDto result = new UploadResultDto();
+
+        int successCount = 0;
+        int failCount = 0;
+
+        for (Book book : bookList) {
+            if (book != null) {
+                successCount++;
+            } else {
+                failCount++;
+            }
+        }
+        result.setSuccessCount(successCount);
+        result.setFailsCount(failCount);
+
+        return result;
     }
 }
