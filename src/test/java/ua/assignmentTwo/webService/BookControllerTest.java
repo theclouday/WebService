@@ -50,8 +50,9 @@ public class BookControllerTest {
                 "id": %d,
                 "title": %s,
                 "yearOfIssue": %d,
-                "author"{}
-                    "id": %d
+                "author":{
+                        "id": %d
+                    }
                 }
                 """.formatted(id,title,yearOfIssue,authorId);
         MvcResult mvcResult = mvc.perform(post("/api/books")
