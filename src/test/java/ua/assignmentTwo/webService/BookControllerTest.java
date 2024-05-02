@@ -66,6 +66,7 @@ public class BookControllerTest {
 
         Book book = bookRepository.findAllById(bookId);
 
+
         assertThat(book).isNotNull();
         assertThat(book.getTitle()).isEqualTo(title);
         assertThat(book.getYearOfIssue()).isEqualTo(yearOfIssue);
