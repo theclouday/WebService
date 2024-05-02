@@ -11,4 +11,5 @@ public class BookListRequestDto {
     private Integer size;
     private String authorName;
     private String title;
+
 }

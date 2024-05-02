@@ -10,5 +10,6 @@ import ua.assignmentTwo.webService.books.model.Book;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Book findAllById(Long id);
 
+
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 }

@@ -105,7 +105,6 @@ public class BookService {
         return bookListItemDto;
     }
 
-
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
