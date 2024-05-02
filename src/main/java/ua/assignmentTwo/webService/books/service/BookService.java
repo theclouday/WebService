@@ -2,7 +2,12 @@ package ua.assignmentTwo.webService.books.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.model.Author;
@@ -12,9 +17,10 @@ import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,17 +73,31 @@ public class BookService {
         bookRepository.save(bookToUpdate);
     }
 
-    public List<BookListItemDto> getList() {
-        List<Book> bookList = bookRepository.findAll();
-        Map<Long, Author> authorMap = authorRepository.findAll().stream()
-                .collect(Collectors.toMap(Author::getId, author -> author));
-        return bookList.stream()
-                .map(book -> convertToListItem(book, authorMap.get(book.getAuthorId())))
-                .toList();
+    public PageDto getList(BookListRequestDto requestDto) {
+        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getSize());
+        Specification<Book> specification = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("authorId"), requestDto.getAuthorId()));
+            predicates.add(cb.like(root.get("title"), "%" + requestDto.getTitle() + "%"));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+        Page<Book> bookPage = bookRepository.findAll(specification, pageable);
+        List<BookListItemDto> bookListItemDto = bookPage.getContent()
+                .stream()
+                .map(this::convertToListItem)
+                .collect(Collectors.toList());
+
+        PageDto pageDto = new PageDto();
+        pageDto.setBookListItemDto(bookListItemDto);
+        pageDto.setTotalPages(bookPage.getTotalPages());
+
+        return pageDto;
     }
 
-    private BookListItemDto convertToListItem(Book book, Author author) {
+    private BookListItemDto convertToListItem(Book book) {
         BookListItemDto bookListItemDto = new BookListItemDto();
+        Author author = authorRepository.findAllById(book.getAuthorId());
+
         bookListItemDto.setId(book.getId());
         bookListItemDto.setAuthorName(author.getName());
         bookListItemDto.setTitle(book.getTitle());
@@ -93,7 +113,8 @@ public class BookService {
     public UploadResultDto uploadFromFile(MultipartFile file) {
         try {
             byte[] fileBytes = file.getBytes();
-            List<BookUploadDto> uploadDtoList = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {});
+            List<BookUploadDto> uploadDtoList = objectMapper.readValue(fileBytes, new TypeReference<List<BookUploadDto>>() {
+            });
             List<Optional<Book>> books = uploadDtoList
                     .stream()
                     .map(this::convertFromUpload)
@@ -107,7 +128,7 @@ public class BookService {
     }
 
     private Optional<Book> convertFromUpload(BookUploadDto uploadDto) {
-        try{
+        try {
             Book book = new Book();
 
             book.setId(uploadDto.getId());
