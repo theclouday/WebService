@@ -81,6 +81,7 @@ public class BookService {
         bookListItemDto.setId(book.getId());
         bookListItemDto.setAuthorName(author.getName());
         bookListItemDto.setTitle(book.getTitle());
+        bookListItemDto.setAuthorId(author.getId());
         return bookListItemDto;
     }
 
