@@ -64,7 +64,6 @@ public class BookService {
         bookRepository.save(book);
     }
 
-
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
         Book bookToUpdate = bookRepository.findAllById(bookId);
 
