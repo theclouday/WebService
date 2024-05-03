@@ -60,8 +60,17 @@ public class BookService {
         book.setId(bookCreateDto.getId());
         book.setTitle(bookCreateDto.getTitle());
         book.setYearOfIssue(bookCreateDto.getYearOfIssue());
-        book.setAuthorId(bookCreateDto.getAuthor().getId());
+        validate(book, bookCreateDto);
         bookRepository.save(book);
+    }
+    private void validate (Book book, BookCreateDto bookCreateDto) {
+        try {
+            if(bookCreateDto.getAuthor().getId() != null) {
+                book.setAuthorId(bookCreateDto.getAuthor().getId());
+            }
+        }catch (NullPointerException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
