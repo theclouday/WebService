@@ -3,11 +3,14 @@ package ua.assignmentTwo.webService.books.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.model.Author;
@@ -19,6 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+
+import org.springframework.http.HttpHeaders;
+
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,12 +71,13 @@ public class BookService {
         validate(book, bookCreateDto);
         bookRepository.save(book);
     }
-    private void validate (Book book, BookCreateDto bookCreateDto) {
+
+    private void validate(Book book, BookCreateDto bookCreateDto) {
         try {
-            if(bookCreateDto.getAuthor().getId() != null) {
+            if (bookCreateDto.getAuthor().getId() != null) {
                 book.setAuthorId(bookCreateDto.getAuthor().getId());
             }
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -81,7 +90,7 @@ public class BookService {
         bookRepository.save(bookToUpdate);
     }
 
-    public PageDto getList(BookListRequestDto requestDto) {
+    public PageDto getList(BookRequestDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getSize());
         Specification<Book> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -166,5 +175,34 @@ public class BookService {
         result.setFailsCount(failCount);
 
         return result;
+    }
+
+    public void generateReport(HttpServletResponse response) {
+        List<Book> books = bookRepository.findAll();
+        String csvContent = generateCsvContent(books);
+        byte[] csvBytes = csvContent.getBytes(StandardCharsets.UTF_8);
+
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.csv");
+        try {
+            response.getOutputStream().write(csvBytes);
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Error generating csv file" + e.getMessage());
+        }
+    }
+
+    private String generateCsvContent(List<Book> books) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Id,Title,Year of issue,Author Id\n");
+
+        for (Book book : books) {
+            builder.append(book.getId()).append(",");
+            builder.append(book.getTitle()).append(",");
+            builder.append(book.getYearOfIssue()).append(",");
+            builder.append(book.getAuthorId()).append("\n");
+        }
+
+        return builder.toString();
     }
 }

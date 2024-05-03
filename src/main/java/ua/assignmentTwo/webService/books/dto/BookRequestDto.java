@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookListRequestDto {
+public class BookRequestDto {
     private Long authorId;
     private Integer page;
     private Integer size;

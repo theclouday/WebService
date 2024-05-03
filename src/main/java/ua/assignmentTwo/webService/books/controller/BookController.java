@@ -1,15 +1,18 @@
 package ua.assignmentTwo.webService.books.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.assignmentTwo.webService.books.dto.*;
 import ua.assignmentTwo.webService.books.service.BookService;
 
-import java.util.List;
+import java.net.http.HttpResponse;
+
 
 @RestController
 @RequestMapping("/api/books")
@@ -40,13 +43,13 @@ public class BookController {
     }
 
     @PostMapping("/_list")
-    public PageDto getList(@RequestBody BookListRequestDto bookListRequestDto){
-        return bookService.getList(bookListRequestDto);
+    public PageDto getList(@RequestBody BookRequestDto bookRequestDto){
+        return bookService.getList(bookRequestDto);
     }
 
-    @PostMapping("/_report")
-    public ExcelFileDto generateFile(RequestBody BookExcelRequest requestExcelDto) {
-        return null;
+    @PostMapping(value = "/_report", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void getReport(HttpServletResponse response) {
+        bookService.generateReport(response);
     }
 
     @PostMapping("/upload")
