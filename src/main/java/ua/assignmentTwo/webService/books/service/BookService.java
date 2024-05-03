@@ -79,7 +79,7 @@ public class BookService {
 
     @SneakyThrows
     private void validate(Book book) {
-        if(book.getTitle() == null){
+        if (book.getTitle() == null) {
             throw new RequiredParameterIsEmptyException("Title is required parameter");
         } else if (book.getYearOfIssue() == null) {
             throw new RequiredParameterIsEmptyException("Year of issue is required parameter");
