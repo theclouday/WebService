@@ -40,21 +40,19 @@ public class BookControllerTest {
 
     @Test
     public void testCreateBook() throws Exception {
-        int id = 1;
         String title = "Sun";
         int yearOfIssue = 1999;
         int authorId = 1;
 
         String body = """
                 {
-                "id": %d,
-                "title": %s,
-                "yearOfIssue": %d,
-                "author":{
-                        "id": %d
+                    "title": "%s",
+                    "yearOfIssue": %d,
+                    "author": {
+                        "id" : %d
                     }
                 }
-                """.formatted(id,title,yearOfIssue,authorId);
+                """.formatted(title,yearOfIssue,authorId);
         MvcResult mvcResult = mvc.perform(post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
@@ -62,11 +60,10 @@ public class BookControllerTest {
                 .andReturn();
 
         RestResponse response = parseResponse(mvcResult, RestResponse.class);
-        long bookId = Integer.parseInt(response.getResult());
+        Long bookId = Long.parseLong(response.getResult());
         assertThat(bookId).isGreaterThanOrEqualTo(1);
 
         Book book = bookRepository.findAllById(bookId);
-
 
         assertThat(book).isNotNull();
         assertThat(book.getTitle()).isEqualTo(title);
