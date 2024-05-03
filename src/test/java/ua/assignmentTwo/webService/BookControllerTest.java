@@ -73,12 +73,4 @@ public class BookControllerTest {
                 )
                 .andExpect(status().isBadRequest());
     }
-
-    private <T>T parseResponse(MvcResult mvcResult, Class<T> c) {
-        try {
-            return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), c);
-        } catch (JsonProcessingException | UnsupportedEncodingException e) {
-            throw new RuntimeException("Error parsing json", e);
-        }
-    }
 }
