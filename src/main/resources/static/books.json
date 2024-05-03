@@ -1,6 +1,5 @@
 [
 {
-    "id": 1,
     "title": "Moon",
     "yearOfIssue": 2022,
     "author": {
@@ -8,7 +7,6 @@
     }
 },
 {
-    "id": 2,
     "title": "Desert",
     "yearOfIssue": 2000,
     "author": {
@@ -16,7 +14,6 @@
     }
 },
 {
-    "id": 3,
     "title": "Space",
     "yearOfIssue": 2008,
     "author": {
