@@ -6,8 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookListItemDto {
-    private Long id;
+    private Long bookId;
     private String title;
-    private String authorName;
-    private Long authorId;
+    private String authorFullName;
 }

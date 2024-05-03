@@ -6,7 +6,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +45,7 @@ public class BookService {
     public BookDetailsDto getBookWithDetails(Long bookId) {
         Book book = bookRepository.findAllById(bookId);
         Author author = authorRepository.findAllById(book.getAuthorId());
+        validate(book);
         return convertDetails(book, author);
     }
 
@@ -67,10 +67,12 @@ public class BookService {
 
     public void createBook(BookCreateDto bookCreateDto) {
         Book book = new Book();
+        Author author = new Author();
 
-        book.setId(bookCreateDto.getId());
+        author.setId(bookCreateDto.getAuthor().getId());
         book.setTitle(bookCreateDto.getTitle());
         book.setYearOfIssue(bookCreateDto.getYearOfIssue());
+        book.setAuthorId(author.getId());
         validate(book);
         bookRepository.save(book);
     }
@@ -79,6 +81,10 @@ public class BookService {
     private void validate(Book book) {
         if(book.getTitle() == null){
             throw new RequiredParameterIsEmptyException("Title is required parameter");
+        } else if (book.getYearOfIssue() == null) {
+            throw new RequiredParameterIsEmptyException("Year of issue is required parameter");
+        } else if (book.getAuthorId() == null) {
+            throw new RequiredParameterIsEmptyException("Author Id is required parameter");
         }
     }
 
@@ -95,7 +101,6 @@ public class BookService {
         Specification<Book> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("authorId"), requestDto.getAuthorId()));
-            predicates.add(cb.like(root.get("title"), "%" + requestDto.getTitle() + "%"));
             return cb.and(predicates.toArray(new Predicate[0]));
         };
         Page<Book> bookPage = bookRepository.findAll(specification, pageable);
@@ -115,10 +120,9 @@ public class BookService {
         BookListItemDto bookListItemDto = new BookListItemDto();
         Author author = authorRepository.findAllById(book.getAuthorId());
 
-        bookListItemDto.setId(book.getId());
-        bookListItemDto.setAuthorName(author.getName());
+        bookListItemDto.setBookId(book.getId());
+        bookListItemDto.setAuthorFullName(author.getName() + " " + author.getSurname());
         bookListItemDto.setTitle(book.getTitle());
-        bookListItemDto.setAuthorId(author.getId());
         return bookListItemDto;
     }
 
@@ -173,7 +177,6 @@ public class BookService {
         }
         result.setSuccessCount(successCount);
         result.setFailsCount(failCount);
-
         return result;
     }
 
