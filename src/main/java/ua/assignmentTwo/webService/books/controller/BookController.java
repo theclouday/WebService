@@ -24,7 +24,7 @@ public class BookController {
     @PostMapping()
     public ResponseEntity createBookInDB(@RequestBody BookCreateDto bookCreateDto) {
         bookService.createBook(bookCreateDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import org.springframework.http.HttpHeaders;
 import ua.assignmentTwo.webService.dto.PageDto;
 import ua.assignmentTwo.webService.dto.UploadResultDto;
+import ua.assignmentTwo.webService.exceptions.RequiredParameterIsEmptyException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -68,17 +71,14 @@ public class BookService {
         book.setId(bookCreateDto.getId());
         book.setTitle(bookCreateDto.getTitle());
         book.setYearOfIssue(bookCreateDto.getYearOfIssue());
-        validate(book, bookCreateDto);
+        validate(book);
         bookRepository.save(book);
     }
 
-    private void validate(Book book, BookCreateDto bookCreateDto) {
-        try {
-            if (bookCreateDto.getAuthor().getId() != null) {
-                book.setAuthorId(bookCreateDto.getAuthor().getId());
-            }
-        } catch (NullPointerException e) {
-            System.err.println(e.getMessage());
+    @SneakyThrows
+    private void validate(Book book) {
+        if(book.getTitle() == null){
+            throw new RequiredParameterIsEmptyException("Title is required parameter");
         }
     }
 

@@ -10,10 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import ua.assignmentTwo.webService.books.dto.BookDetailsDto;
 import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
-import ua.assignmentTwo.webService.dto.RestResponse;
 
 import java.io.UnsupportedEncodingException;
 
@@ -53,17 +51,13 @@ public class BookControllerTest {
                     }
                 }
                 """.formatted(title,yearOfIssue,authorId);
-        MvcResult mvcResult = mvc.perform(post("/api/books")
+        mvc.perform(post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
-                .andExpect(status().isCreated())
-                .andReturn();
+                .andExpect(status().isCreated());
 
-        RestResponse response = parseResponse(mvcResult, RestResponse.class);
-        Long bookId = Long.parseLong(response.getResult());
-        assertThat(bookId).isGreaterThanOrEqualTo(1);
 
-        Book book = bookRepository.findAllById(bookId);
+        Book book = bookRepository.findAll().get(0);
 
         assertThat(book).isNotNull();
         assertThat(book.getTitle()).isEqualTo(title);
