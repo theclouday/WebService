@@ -1,4 +1,4 @@
-package ua.assignmentTwo.webService.books.dto;
+package ua.assignmentTwo.webService.dto;
 
 import lombok.Getter;
 import lombok.Setter;

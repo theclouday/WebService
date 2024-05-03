@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.assignmentTwo.webService.books.dto.*;
 import ua.assignmentTwo.webService.books.service.BookService;
-
-import java.net.http.HttpResponse;
+import ua.assignmentTwo.webService.dto.PageDto;
+import ua.assignmentTwo.webService.dto.UploadResultDto;
 
 
 @RestController
@@ -33,7 +33,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public void  updateBook(@PathVariable Long id, @RequestBody BookUpdateDto bookUpdateDto) {
+    public void updateBook(@PathVariable Long id, @RequestBody BookUpdateDto bookUpdateDto) {
         bookService.updateDataInBook(id, bookUpdateDto);
     }
 
@@ -43,18 +43,18 @@ public class BookController {
     }
 
     @PostMapping("/_list")
-    public PageDto getList(@RequestBody BookRequestDto bookRequestDto){
+    public PageDto getList(@RequestBody BookRequestDto bookRequestDto) {
         return bookService.getList(bookRequestDto);
     }
 
     @PostMapping(value = "/_report", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void getReport(HttpServletResponse response) {
-        bookService.generateReport(response);
+    public void getReport(HttpServletResponse response, @RequestBody BookRequestDto bookRequestDto) {
+        bookService.generateReport(response, bookRequestDto);
     }
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public UploadResultDto uploadFromFile(@RequestParam("file") MultipartFile multipart){
-        return  bookService.uploadFromFile(multipart);
+    public UploadResultDto uploadFromFile(@RequestParam("file") MultipartFile multipart) {
+        return bookService.uploadFromFile(multipart);
     }
 }

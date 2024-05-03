@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.assignmentTwo.webService.authors.dto.AuthorDetailsDto;
 import ua.assignmentTwo.webService.authors.model.Author;
@@ -24,8 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import org.springframework.http.HttpHeaders;
+import ua.assignmentTwo.webService.dto.PageDto;
+import ua.assignmentTwo.webService.dto.UploadResultDto;
 
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class BookService {
                 .collect(Collectors.toList());
 
         PageDto pageDto = new PageDto();
-        pageDto.setBookListItemDto(bookListItemDto);
+        pageDto.setList(bookListItemDto);
         pageDto.setTotalPages(bookPage.getTotalPages());
 
         return pageDto;
@@ -177,8 +177,8 @@ public class BookService {
         return result;
     }
 
-    public void generateReport(HttpServletResponse response) {
-        List<Book> books = bookRepository.findAll();
+    public void generateReport(HttpServletResponse response, BookRequestDto bookRequestDto) {
+        Page<Book> books = filterRequestData(bookRequestDto);
         String csvContent = generateCsvContent(books);
         byte[] csvBytes = csvContent.getBytes(StandardCharsets.UTF_8);
 
@@ -192,7 +192,7 @@ public class BookService {
         }
     }
 
-    private String generateCsvContent(List<Book> books) {
+    private String generateCsvContent(Page<Book> books) {
         StringBuilder builder = new StringBuilder();
         builder.append("Id,Title,Year of issue,Author Id\n");
 
@@ -202,7 +202,24 @@ public class BookService {
             builder.append(book.getYearOfIssue()).append(",");
             builder.append(book.getAuthorId()).append("\n");
         }
-
         return builder.toString();
     }
+
+    private Page<Book> filterRequestData(BookRequestDto bookRequestDto) {
+        Long authorId = bookRequestDto.getAuthorId();
+        String title = bookRequestDto.getTitle();
+        Integer page = bookRequestDto.getPage();
+        Integer size = bookRequestDto.getSize();
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        if (authorId != null) {
+            return bookRepository.findByAuthorId(authorId, pageRequest);
+        } else if (title != null) {
+            return bookRepository.findByTitle(title, pageRequest);
+        } else {
+            return bookRepository.findAll(pageRequest);
+        }
+    }
 }
+
