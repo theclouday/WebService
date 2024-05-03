@@ -1,0 +1,76 @@
+[
+{
+    "id": 1,
+    "title": "Moon",
+    "yearOfIssue": 2022,
+    "author": {
+        "id": 1
+    }
+},
+{
+    "id": 2,
+    "title": "Desert",
+    "yearOfIssue": 2000,
+    "author": {
+        "id": 3
+    }
+},
+{
+    "id": 3,
+    "title": "Space",
+    "yearOfIssue": 2008,
+    "author": {
+        "id": 1
+    }
+}, 
+{
+    "title": "Sky",
+    "yearOfIssue": 2015,
+    "author": {
+        "id": 2
+    }
+}, 
+{
+    "title": "Ocean",
+    "yearOfIssue": 1995,
+    "author": {
+        "id": 1
+    }
+},
+{
+    "title": "Forest",
+    "yearOfIssue": 2002,
+    "author": {
+        "id": 3
+    }
+},
+{
+    "title": "River",
+    "yearOfIssue": 2018,
+    "author": {
+        "id": 2
+    }
+},
+{
+    "title": "Mountain",
+    "yearOfIssue": 2010,
+    "author": {
+        "id": 3
+    }
+},
+{
+    "title": "Sunshine",
+    "yearOfIssue": 1999,
+    "author": {
+        "id": 1
+    }
+},
+{
+    "title": "Garden",
+    "yearOfIssue": 2005,
+    "author": {
+        "id": 4
+    }
+}
+]
+
