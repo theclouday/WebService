@@ -1,9 +1,7 @@
 package ua.assignmentTwo.webService;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
-import ua.assignmentTwo.webService.books.controller.BookController;
 import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
-import ua.assignmentTwo.webService.books.service.BookService;
 
 import static org.hamcrest.Matchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,12 +29,6 @@ public class BookControllerTest {
     private BookRepository bookRepository;
     @Autowired
     private AuthorRepository authorRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Mock
-    private BookService bookService;
-    @Autowired
-    private BookController bookController;
 
     @AfterEach
     public void afterEach() {
