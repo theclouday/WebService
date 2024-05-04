@@ -15,4 +15,10 @@ public class CustomExceptionHandler {
     public final ResponseEntity<Object> handleBadRequestException(RequiredParameterIsEmptyException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<Object> handleBadRequestException(RequiredParameterIsDuplicateException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
