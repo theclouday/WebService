@@ -1,5 +1,6 @@
 package ua.assignmentTwo.webService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ua.assignmentTwo.webService.authors.model.Author;
 import ua.assignmentTwo.webService.authors.repository.AuthorRepository;
 import ua.assignmentTwo.webService.books.model.Book;
 import ua.assignmentTwo.webService.books.repository.BookRepository;
+import ua.assignmentTwo.webService.dto.PageDto;
 
 import static org.hamcrest.Matchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,6 +33,8 @@ public class BookControllerTest {
     private BookRepository bookRepository;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @AfterEach
     public void afterEach() {
@@ -129,7 +135,7 @@ public class BookControllerTest {
     @Test
     public void testDeleteBook() throws Exception {
         Author author = new Author();
-        author.setName("Alex");
+        author.setName("David");
         author.setSurname("Gowll");
         authorRepository.save(author);
 
@@ -141,5 +147,37 @@ public class BookControllerTest {
 
         mvc.perform(delete("/api/books/" + book.getId()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetList() throws Exception {
+        int page = 0;
+        int size = 100;
+        int expectedTotalPages = 0;
+
+        Author author = new Author();
+        author.setSurname("Parkinson");
+        author.setName("Alex");
+        authorRepository.save(author);
+
+
+        String body = """
+                {
+                     "authorId": %d,
+                     "page": %d,
+                     "size": %d
+                 }
+                """.formatted(author.getId(), page, size);
+
+        MvcResult result = mvc.perform(post("/api/books/_list")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        PageDto pageDto = objectMapper.readValue(content, PageDto.class);
+
+        assertEquals(expectedTotalPages, pageDto.getTotalPages());
     }
 }
