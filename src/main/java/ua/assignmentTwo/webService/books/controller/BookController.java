@@ -28,8 +28,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDetailsDto findBookById(@PathVariable Long id) {
-        return bookService.getBookWithDetails(id);
+    public ResponseEntity<BookDetailsDto> findBookById(@PathVariable Long id) {
+        return new ResponseEntity<>(bookService.getBookWithDetails(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
