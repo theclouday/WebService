@@ -44,8 +44,8 @@ public class BookService {
 
     public BookDetailsDto getBookWithDetails(Long bookId) {
         Book book = bookRepository.findAllById(bookId);
-        Author author = authorRepository.findAllById(book.getAuthorId());
         validate(book);
+        Author author = authorRepository.findAllById(book.getAuthorId());
         return convertDetails(book, author);
     }
 
@@ -69,30 +69,38 @@ public class BookService {
         Book book = new Book();
         Author author = new Author();
 
+        Optional.ofNullable(bookCreateDto.getAuthor())
+                .orElseThrow(() -> new RequiredParameterIsEmptyException("Author details are required"));
+
         author.setId(bookCreateDto.getAuthor().getId());
         book.setTitle(bookCreateDto.getTitle());
         book.setYearOfIssue(bookCreateDto.getYearOfIssue());
         book.setAuthorId(author.getId());
+
         validate(book);
         bookRepository.save(book);
     }
 
     @SneakyThrows
     private void validate(Book book) {
-        if (book.getTitle() == null) {
-            throw new RequiredParameterIsEmptyException("Title is required parameter");
-        } else if (book.getYearOfIssue() == null) {
-            throw new RequiredParameterIsEmptyException("Year of issue is required parameter");
-        } else if (book.getAuthorId() == null) {
-            throw new RequiredParameterIsEmptyException("Author Id is required parameter");
+        if (book == null) {
+            throw new RequiredParameterIsEmptyException("There is no book with this ID");
+        } else {
+            if (book.getTitle() == null) {
+                throw new RequiredParameterIsEmptyException("Title is required parameter");
+            } else if (book.getYearOfIssue() == null) {
+                throw new RequiredParameterIsEmptyException("Year of issue is required parameter");
+            } else if (book.getAuthorId() == null) {
+                throw new RequiredParameterIsEmptyException("Author Id is required parameter");
+            }
         }
     }
 
     public void updateDataInBook(Long bookId, BookUpdateDto bookUpdateDto) {
         Book bookToUpdate = bookRepository.findAllById(bookId);
-
         bookToUpdate.setTitle(bookUpdateDto.getTitle());
         bookToUpdate.setYearOfIssue(bookUpdateDto.getYearOfIssue());
+        validate(bookToUpdate);
         bookRepository.save(bookToUpdate);
     }
 
