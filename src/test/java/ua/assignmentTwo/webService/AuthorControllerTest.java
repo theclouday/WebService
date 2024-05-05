@@ -1,6 +1,7 @@
 package ua.assignmentTwo.webService;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
@@ -27,10 +27,19 @@ public class AuthorControllerTest {
     private MockMvc mvc;
     @Autowired
     private AuthorRepository authorRepository;
+    private Author author;
 
     @AfterEach
-    public void afterEach() {
+    public void deleteTestData() {
         authorRepository.deleteAll();
+    }
+
+    @BeforeEach
+    public void createAuthor() {
+        author = new Author();
+        author.setName("Matt");
+        author.setSurname("Kennedy");
+        authorRepository.save(author);
     }
 
     @Test
@@ -68,13 +77,8 @@ public class AuthorControllerTest {
 
     @Test
     public void testUpdateAuthor() throws Exception {
-        Author author = new Author();
-        author.setName("Alex");
-        author.setSurname("Nealex");
-        authorRepository.save(author);
-
         String newName = "John";
-        String newSurname = "Garill";
+        String newSurname = "Garey";
 
         String body = """
                 {
@@ -88,16 +92,18 @@ public class AuthorControllerTest {
                 .content(body);
         mvc.perform(requestBuilder)
                 .andExpect(status().isOk());
+
+        Author updatedAuthor = authorRepository.findAllById(author.getId());
+        assertThat(updatedAuthor.getName()).isEqualTo(newName);
+        assertThat(updatedAuthor.getSurname()).isEqualTo(newSurname);
     }
 
     @Test
     public void testDeleteAuthor() throws Exception {
-        Author author = new Author();
-        author.setName("John");
-        author.setSurname("Kennedy");
-        authorRepository.save(author);
-
         mvc.perform(delete("/api/authors/" + author.getId()))
                 .andExpect(status().isOk());
+
+        Author deletedAuthor = authorRepository.findAllById(author.getId());
+        assertThat(deletedAuthor).isNull();
     }
 }
