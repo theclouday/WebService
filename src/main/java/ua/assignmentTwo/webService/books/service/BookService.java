@@ -147,7 +147,10 @@ public class BookService {
                     .stream()
                     .map(this::convertFromUpload)
                     .toList();
-            List<Book> validBooks = books.stream().filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+            List<Book> validBooks = books.stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
             bookRepository.saveAll(validBooks);
             return counter(books);
         } catch (IOException e) {
